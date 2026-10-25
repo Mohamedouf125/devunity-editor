@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevUnity Editor — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Tajawal:wght@400;700&family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; padding: 32px 16px; background: #f3f4f6; font-family: Cairo, system-ui, sans-serif; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { margin: 0 0 4px; font-size: 26px; }
+    p.lead { margin: 0 0 20px; color: #6b7280; }
+    form { display: grid; gap: 12px; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 14px; border-radius: 10px; overflow: auto; direction: ltr; text-align: left; font-size: 12px; max-height: 260px; }
+    button.submit { justify-self: start; background: #10b981; color: #fff; border: 0; border-radius: 8px; padding: 10px 20px; font: inherit; font-weight: 700; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>DevUnity Editor</h1>
+    <p class="lead">محرر نصوص كامل — عربي و RTL — ملف واحد بدون أي مكتبات.</p>
+
+    <form id="post-form" onsubmit="event.preventDefault(); document.getElementById('out').textContent = new FormData(this).get('body');">
+      <!-- Any textarea becomes an editor; its value stays in sync, so normal form submits just work -->
+      <textarea id="body" name="body" placeholder="اكتب وصف الوحدة هنا…"><h2>شقة 165 م² — التجمع السادس</h2><p>شقة <b>3 غرف</b> بإطلالة مفتوحة على اللاند سكيب، تشطيب كامل، استلام فوري.</p><ul><li>مقدم 10%</li><li>تقسيط حتى 8 سنوات</li></ul></textarea>
+      <button class="submit" type="submit">حفظ (عرض الـ HTML)</button>
+    </form>
+    <pre id="out"></pre>
+  </div>
+
+  <script src="../dist/devunity-editor.min.js"></script>
+  <script>
+    window.editor = new DevUnityEditor('#body', {
+      lang: 'ar',
+      minHeight: 320,
+      // uploadUrl: '/editor/upload',   // Laravel route returning {"url": "..."}
+      onChange: function (html) { /* autosave, etc. */ }
+    });
+  </script>
+</body>
+</html>

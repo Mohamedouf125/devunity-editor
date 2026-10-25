@@ -1,0 +1,19 @@
+{
+  "name": "devunity-editor",
+  "version": "1.0.0",
+  "description": "Lightweight, dependency-free WYSIWYG rich text editor with first-class Arabic / RTL support.",
+  "main": "dist/devunity-editor.js",
+  "unpkg": "dist/devunity-editor.min.js",
+  "jsdelivr": "dist/devunity-editor.min.js",
+  "style": "dist/devunity-editor.css",
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "keywords": ["wysiwyg", "rich-text", "editor", "rtl", "arabic", "contenteditable", "laravel"],
+  "author": "DevUnity <info@devunity.co> (https://devunity.co)",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
