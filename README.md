@@ -10,7 +10,7 @@ One JS file (CSS is injected automatically) — drop it into Laravel, Next.js, o
 ## 1. Install from the CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/YOUR-GITHUB-USER/devunity-editor@1.0.0/dist/devunity-editor.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Mohamedouf125/devunity-editor@1.0.0/dist/devunity-editor.min.js"></script>
 ```
 
 That's it — styles are injected by the script. (Optional: if you add `dist/devunity-editor.css` as a `<link>` yourself, the script detects it and won't inject the styles again.)
@@ -18,9 +18,9 @@ That's it — styles are injected by the script. (Optional: if you add `dist/dev
 ### Publishing it to a CDN
 
 **Option A — jsDelivr via GitHub (free, recommended)**
-1. Push this folder to a public GitHub repo, e.g. `devunity/devunity-editor`.
+1. Push this folder to your GitHub repo, e.g. `Mohamedouf125/devunity-editor`.
 2. Create a release/tag: `git tag v1.0.0 && git push --tags`
-3. Use: `https://cdn.jsdelivr.net/gh/devunity/devunity-editor@1.0.0/dist/devunity-editor.min.js`
+3. Use: `https://cdn.jsdelivr.net/gh/Mohamedouf125/devunity-editor@1.0.0/dist/devunity-editor.min.js`
    - `@1` → latest 1.x · `@latest` → latest tag (cached up to 7 days; pin versions in production)
 
 **Option B — npm (gives you unpkg + jsDelivr)**
@@ -169,14 +169,29 @@ public function store(Request $request)
 }
 ```
 
-**Blade**
+**Blade (Option A: Direct HTML)**
 ```blade
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <textarea name="description" data-devunity-editor data-upload-url="{{ route('editor.upload') }}">{{ old('description', $unit->description) }}</textarea>
 
-<script src="https://cdn.jsdelivr.net/gh/devunity/devunity-editor@1/dist/devunity-editor.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Mohamedouf125/devunity-editor@1/dist/devunity-editor.min.js"></script>
 ```
+
+**Blade (Option B: Ready-made Component Wrapper)**
+Copy `wrappers/blade/devunity-editor.blade.php` to your Laravel project at `resources/views/components/devunity-editor.blade.php`:
+```blade
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<x-devunity-editor
+    name="description"
+    :value="$unit->description"
+    :upload-url="route('editor.upload')"
+    lang="ar"
+    min-height="320"
+/>
+```
+*(Handles old form inputs, Livewire synchronization, and script loading automatically).*
 
 **Always re-sanitize on the server** before saving (client-side sanitizing can be bypassed), e.g. with `mews/purifier`:
 ```php
@@ -186,11 +201,38 @@ $data['description'] = clean($request->description);
 **Displaying saved content** — wrap it in `.due-render` to get identical styling:
 ```blade
 <div class="due-render" dir="rtl">{!! $unit->description !!}</div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devunity/devunity-editor@1/dist/devunity-editor.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Mohamedouf125/devunity-editor@1/dist/devunity-editor.css">
 ```
+
+---
 
 ## 7. Next.js / React
 
+A ready-to-use React component wrapper is provided in `wrappers/react/DevUnityEditor.jsx` (with TypeScript definitions).
+
+**Usage in Next.js (App Router / Pages Router):**
+```jsx
+'use client';
+import { useState } from 'react';
+import DevUnityEditor from '@/components/DevUnityEditor'; // from wrappers/react/DevUnityEditor.jsx
+
+export default function MyEditorPage() {
+  const [content, setContent] = useState('<h2>عنوان المقال</h2><p>محتوى تجريبي...</p>');
+
+  return (
+    <div style={{ maxWidth: 900, margin: '40px auto' }}>
+      <DevUnityEditor
+        value={content}
+        onChange={setContent}
+        uploadUrl="/api/editor/upload"
+        lang="ar"
+        minHeight={350}
+      />
+    </div>
+  );
+}
+```
+Or with vanilla React and direct CDN loading:
 ```jsx
 'use client';
 import { useEffect, useRef } from 'react';

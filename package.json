@@ -6,7 +6,11 @@
   "unpkg": "dist/devunity-editor.min.js",
   "jsdelivr": "dist/devunity-editor.min.js",
   "style": "dist/devunity-editor.css",
-  "files": ["dist", "README.md", "LICENSE"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohamedouf125/devunity-editor.git"
+  },
+  "files": ["dist", "wrappers", "README.md", "LICENSE"],
   "scripts": {
     "build": "node build.mjs"
   },
